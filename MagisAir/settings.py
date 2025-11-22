@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 	'django_bootstrap5',
 	'bootstrap_datepicker_plus',
     'Passenger',
+    'bookings'
 ]
 
 MIDDLEWARE = [
