@@ -45,21 +45,33 @@ class Route(models.Model):
         return f"{self.origin} -> {self.destination}"
     
 class Flight(models.Model):
-    departuredate = models.DateField()
-    departuretime = models.TimeField()
-    arrivaldate = models.DateField()
-    arrivaltime = models.TimeField()
-    flightcost = models.PositiveIntegerField()
+    flight_code = models.CharField(  
+        max_length=6,
+        validators=[
+            RegexValidator(
+                regex=r'^MA \d{3}$',
+                message="Flight code must be in format 'MA 800' (MA + space + 3 digits)."
+            )
+        ],
+        unique=True,
+        verbose_name="Flight Code",
+        help_text="Format: MA 800"
+    )
+    departure_date = models.DateField()
+    departure_time = models.TimeField()
+    arrival_date = models.DateField()
+    arrival_time = models.TimeField()
     route = models.ForeignKey(
         Route,
         on_delete=models.CASCADE,
     )
+    base_fare = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.name
+        return f"{self.flightcode} — {self.route}"
     
 class Booking(models.Model):
-    bookdate = models.DateField(auto_created=True, auto_now_add=True)
+    created_at = models.DateField(auto_created=True, auto_now_add=True)
     base_fare = models.PositiveIntegerField()
     
     passenger = models.ForeignKey(
