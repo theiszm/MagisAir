@@ -3,13 +3,6 @@ from django.urls import reverse
 from User_Management.models import *
 from django.core.validators import RegexValidator
 
-# Create your models here.
-
-iata_validator = RegexValidator(
-    regex=r'^[A-Z]{3}$',
-    message="IATA code must be exactly three uppercase letters (A–Z)."
-)
-
 class Passenger(models.Model):
     passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
     phonenumber = models.CharField(
@@ -33,8 +26,12 @@ class City(models.Model):
     iata_code = models.CharField(
         "IATA code",  
         max_length=3,
-        validators=[iata_validator],
-        help_text="Enter exactly three letters."
+        validators=[
+            RegexValidator(
+                regex=r'^[A-Z]{3}$',
+                message="IATA code must be exactly three uppercase letters (A–Z)."
+            ),
+        ]
     )
     
     class Meta:
