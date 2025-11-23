@@ -9,7 +9,7 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    phonenumber = models.CharField(
+    phone_number = models.CharField(
         max_length=15,
         validators=[
             RegexValidator(
