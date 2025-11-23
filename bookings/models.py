@@ -73,13 +73,11 @@ class Flight(models.Model):
 class Booking(models.Model):
     created_at = models.DateField(auto_created=True, auto_now_add=True)
     base_fare = models.PositiveIntegerField()
-    
     passenger = models.ForeignKey(
         Passenger,
         on_delete=models.CASCADE,
         related_name='bookings',    # passenger.bookings.all()
     )
-    
     flight = models.ForeignKey(
         Flight,
         on_delete=models.CASCADE,
@@ -94,15 +92,18 @@ class Booking(models.Model):
     TERMINAL_FEE_PRICE = 800    # always included, qty = 1
     INSURANCE_PRICE = 500       # if travel_insurance == True
     
-    @property
+     @property
     def total_cost(self):
+        # normalized: use flight.base_fare, not a field on Booking
+        base_fare = self.flight.base_fare
+
         extras = 0
-        extras += self.baggage_allowance_qty * BAGGAGE_UNIT_PRICE
+        extras += self.baggage_allowance_qty * self.BAGGAGE_UNIT_PRICE
         extras += self.TERMINAL_FEE_PRICE
-        if self.include_travel_insurance:
-            extras += INSURANCE_PRICE
-            
-        return self.base_fare + extras
+        if self.travel_insurance:
+            extras += self.INSURANCE_PRICE
+
+        return base_fare + extras
 
     def __str__(self):
         return f"Booking #{self.pk} — {self.passenger} on {self.flight}"
