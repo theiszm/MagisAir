@@ -3,20 +3,7 @@ from django.urls import reverse
 from User_Management.models import *
 from django.core.validators import RegexValidator
 
-class Passenger(models.Model):
-    passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
-    phonenumber = models.CharField(
-        max_length=15,
-        validators=[
-            RegexValidator(
-                regex=r'^\+?1?\d{9,15}$',
-                message="Enter phone number in this format: +631234567890. This accepts up to 15 digits."
-            ),
-        ]
-    )
-
-    def __str__(self):
-        return self.name
+from Passenger.models import Passenger
 
 class City(models.Model):
     """ A model for a specific destination for the airline. """
