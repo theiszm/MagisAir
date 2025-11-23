@@ -109,7 +109,7 @@ class Booking(models.Model):
         return base_fare + extras
 
     def __str__(self):
-        return f"Booking #{self.pk} — {self.passenger} on {self.flight}"
+        return f"Booking #{self.pk} — {self.passenger} on {self.flight} [{self.flight.departure.strftime("%Y %B %d")}]"
     
     
     
