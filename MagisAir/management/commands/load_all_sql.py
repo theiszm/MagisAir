@@ -10,7 +10,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--path",
             type=str,
-            default="sql",
+            default="SQL",
         )
 
     def handle(self, *args, **options):
