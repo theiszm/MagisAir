@@ -73,19 +73,41 @@ class Flight(models.Model):
     
 class Booking(models.Model):
     bookdate = models.DateField(auto_created=True, auto_now_add=True)
-    bookcost = models.PositiveIntegerField()
+    base_fare = models.PositiveIntegerField()
+    
     passenger = models.ForeignKey(
         Passenger,
         on_delete=models.CASCADE,
-        related_name='bookings',      # passenger.bookings.all()
+        related_name='bookings',    # passenger.bookings.all()
     )
+    
     flight = models.ForeignKey(
         Flight,
         on_delete=models.CASCADE,
-        related_name='bookings',      # flight.bookings.all()
+        related_name='bookings',    # flight.bookings.all()
     )
+    
+    # each unit = 5kg extra baggage, for example
+    baggage_allowance_qty = models.PositiveIntegerField(default=0)
+    travel_insurance = models.BooleanField(default=False)
+    
+    BAGGAGE_UNIT_PRICE = 1000   # per 5kg unit
+    TERMINAL_FEE_PRICE = 800    # always included, qty = 1
+    INSURANCE_PRICE = 500       # if travel_insurance == True
+    
+    @property
+    def total_cost(self):
+        extras = 0
+        extras += self.baggage_allowance_qty * BAGGAGE_UNIT_PRICE
+        extras += self.TERMINAL_FEE_PRICE
+        if self.include_travel_insurance:
+            extras += INSURANCE_PRICE
+            
+        return self.base_fare + extras
 
     def __str__(self):
-        return self.name
+        return f"Booking #{self.pk} — {self.passenger} on {self.flight}"
+    
+    
     
     
