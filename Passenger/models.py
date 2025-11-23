@@ -17,7 +17,12 @@ class Passenger(models.Model):
     )
     
     def __str__(self):
-        return f'{str(self.last_name)}, {str(self.first_name)} {str(self.middle_name)[0]}.'
+        middle_initial = f"{self.middle_name[0]}." if self.middle_name else ""
+        return f"{self.last_name}, {self.first_name} {middle_initial}".strip()
+    
+    def __str__(self):
+        middle_initial = f"{self.middle_name[0]}." if self.middle_name else ""
+        return f"{self.last_name}, {self.first_name} {middle_initial}".strip()
     
     def get_absolute_url(self):
         return reverse('passenger', args=[self.pk])
