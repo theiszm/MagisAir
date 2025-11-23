@@ -9,16 +9,21 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
+    phonenumber = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?1?\d{9,15}$',
+                message="Enter phone number in this format: +631234567890. This accepts up to 15 digits."
+            ),
+        ]
+    )
     birthdate = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=1, 
         choices=[('F', 'Female'), ('M', 'Male')], 
         default='', null=True, blank=True, 
     )
-    
-    def __str__(self):
-        middle_initial = f"{self.middle_name[0]}." if self.middle_name else ""
-        return f"{self.last_name}, {self.first_name} {middle_initial}".strip()
     
     def __str__(self):
         middle_initial = f"{self.middle_name[0]}." if self.middle_name else ""
