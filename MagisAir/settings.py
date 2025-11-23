@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'django_bootstrap5',
 	'bootstrap_datepicker_plus',
+    'MagisAir',
     'Passenger',
     'Bookings'
 ]

@@ -72,11 +72,10 @@ class Flight(models.Model):
         return f"{hours} hr {mins} min"
 
     def __str__(self):
-        return f"{self.flightcode} — {self.route}"
+        return f"{self.flight_code} — {self.route}"
     
 class Booking(models.Model):
     created_at = models.DateField(auto_created=True, auto_now_add=True)
-    base_fare = models.PositiveIntegerField()
     passenger = models.ForeignKey(
         Passenger,
         on_delete=models.CASCADE,
