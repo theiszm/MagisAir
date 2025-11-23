@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 
 class Passenger(models.Model):
@@ -11,6 +11,7 @@ class Passenger(models.Model):
     last_name = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.CharField(
         max_length=15,
+        null=True, blank=True,
         validators=[
             RegexValidator(
                 regex=r'^\+?1?\d{9,15}$',

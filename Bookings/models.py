@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from User_Management.models import *
 from django.core.validators import RegexValidator
 
 from Passenger.models import Passenger
@@ -92,7 +91,7 @@ class Booking(models.Model):
     TERMINAL_FEE_PRICE = 800    # always included, qty = 1
     INSURANCE_PRICE = 500       # if travel_insurance == True
     
-     @property
+    @property
     def total_cost(self):
         # normalized: use flight.base_fare, not a field on Booking
         base_fare = self.flight.base_fare
