@@ -56,15 +56,20 @@ class Flight(models.Model):
         verbose_name="Flight Code",
         help_text="Format: MA 800"
     )
-    departure_date = models.DateField()
-    departure_time = models.TimeField()
-    arrival_date = models.DateField()
-    arrival_time = models.TimeField()
+    departure = models.DateTimeField()
+    arrival = models.DateTimeField()
     route = models.ForeignKey(
         Route,
         on_delete=models.CASCADE,
     )
     base_fare = models.PositiveIntegerField()
+    
+    @property
+    def duration(self):
+        d = self.arrival - self.departure
+        hours = d.seconds // 3600
+        mins = (d.seconds % 3600) // 60
+        return f"{hours} hr {mins} min"
 
     def __str__(self):
         return f"{self.flightcode} — {self.route}"
