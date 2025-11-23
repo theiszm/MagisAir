@@ -77,10 +77,12 @@ class Booking(models.Model):
     passenger = models.ForeignKey(
         Passenger,
         on_delete=models.CASCADE,
+        related_name='bookings',      # passenger.bookings.all()
     )
     flight = models.ForeignKey(
         Flight,
         on_delete=models.CASCADE,
+        related_name='bookings',      # flight.bookings.all()
     )
 
     def __str__(self):
