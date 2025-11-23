@@ -9,6 +9,15 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
+    phone_number = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?1?\d{9,15}$',
+                message="Enter phone number in this format: +631234567890. This accepts up to 15 digits."
+            ),
+        ]
+    )
     birthdate = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=1, 
@@ -17,7 +26,8 @@ class Passenger(models.Model):
     )
     
     def __str__(self):
-        return f'{str(self.last_name)}, {str(self.first_name)} {str(self.middle_name)[0]}.'
+        middle_initial = f"{self.middle_name[0]}." if self.middle_name else ""
+        return f"{self.last_name}, {self.first_name} {middle_initial}".strip()
     
     def get_absolute_url(self):
         return reverse('passenger', args=[self.pk])
