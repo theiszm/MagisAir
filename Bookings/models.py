@@ -22,6 +22,9 @@ class City(models.Model):
     
     class Meta:
         verbose_name_plural = "Cities"
+
+    def get_absolute_url(self):
+        return reverse('bookings:cityflights', args=[self.pk])
         
     def save(self, *args, **kwargs):
         """ Save IATA codes in uppercase letters."""
@@ -76,6 +79,7 @@ class Flight(models.Model):
     
 class Booking(models.Model):
     created_at = models.DateField(auto_created=True, auto_now_add=True)
+    base_fare = models.PositiveIntegerField()
     passenger = models.ForeignKey(
         Passenger,
         on_delete=models.CASCADE,
@@ -109,7 +113,7 @@ class Booking(models.Model):
         return base_fare + extras
 
     def __str__(self):
-        return f"Booking #{self.pk} — {self.passenger} on {self.flight} [{self.flight.departure.strftime("%Y %B %d")}]"
+        return f"Booking #{self.pk} — {self.passenger} on {self.flight}"
     
     
     
