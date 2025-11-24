@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}TEST{% endblock %}
+
+{% block content %}
+
+<h1>Search a destination</h1>
+<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+
+<p>Which city or country do you want to go to?</p>
+
+<form action="{% url 'bookings:destsearchresult' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+  <button type="submit">Search
+</form>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}TEST{% endblock %}
+
+{% block content %}
+
+<h1>Search a destination</h1>
+<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+
+<p>Here are the destinations that matches your search:</p>
+
+<ul>
+  {% for city in object_list %}
+    <li>
+      <a href="{{ city.get_absolute_url }}">{{ city.city }} ({{ city.iata_code }}), {{ city.country }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<p>Select one to view flights available for the destination.</p>
+
+{% endblock %}
