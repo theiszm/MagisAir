@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}TEST{% endblock %}
+
+{% block content %}
+
+<h1>My Booked Flights</h1>
+<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+
+{% if request.user.is_authenticated %}
+<p>Here are the flights booked for {% if passenger %}{{ passenger.first_name }} {{ passenger.last_name }}.{% endif %}</p>
+
+<ul>
+  {% for booking in object_list %}
+      <li>
+        <a href="{{ booking.get_absolute_url }}">{{ booking.flight.flight_code }}: Departs on {{ booking.flight.departure }} from {{ booking.flight.route.origin }}, and arrives on {{ booking.flight.arrival }} to {{ booking.flight.route.destination }}</a>
+      </li>
+  {% endfor %}
+</ul>
+
+{% endif %}
+
+{% endblock %}

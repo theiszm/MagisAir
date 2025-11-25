@@ -11,10 +11,14 @@
 
 <h2>{{ object.city }} ({{ object.iata_code }})</h2>
 
+<p>Click a flight to book.</p>
+
 <ul>
   {% for route in object.destinations.all %}
     {% for flight in route.flight_set.all %}
-      <li>{{ flight.flight_code }}: Departs on {{ flight.departure_date }} at {{ flight.departure_time }} from {{ flight.route.origin }}, and arrives on {{ flight.arrival_date }} at {{ flight.arrival_time }} to {{ flight.route.destination }}</li>
+      <li>
+        <a href="{% url 'bookings:booking' %}?flight_id={{ flight.pk }}">{{ flight.flight_code }}: Departs on {{ flight.departure }} from {{ flight.route.origin }}, and arrives on {{ flight.arrival }} to {{ flight.route.destination }}</a>
+      </li>
     {% endfor %}
   {% endfor %}
 </ul>

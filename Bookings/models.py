@@ -79,7 +79,6 @@ class Flight(models.Model):
     
 class Booking(models.Model):
     created_at = models.DateField(auto_created=True, auto_now_add=True)
-    base_fare = models.PositiveIntegerField()
     passenger = models.ForeignKey(
         Passenger,
         on_delete=models.CASCADE,
@@ -98,6 +97,8 @@ class Booking(models.Model):
     BAGGAGE_UNIT_PRICE = 1000   # per 5kg unit
     TERMINAL_FEE_PRICE = 800    # always included, qty = 1
     INSURANCE_PRICE = 500       # if travel_insurance == True
+
+
     
     @property
     def total_cost(self):
@@ -111,10 +112,17 @@ class Booking(models.Model):
             extras += self.INSURANCE_PRICE
 
         return base_fare + extras
+    
+    def baggage_allowance_price_product(self):
+        return self.baggage_allowance_qty * self.BAGGAGE_UNIT_PRICE
 
     def __str__(self):
         return f"Booking #{self.pk} — {self.passenger} on {self.flight}"
     
-    
+    class Meta:
+        unique_together = ('passenger', 'flight')
+
+    def get_absolute_url(self):
+        return reverse('bookings:bookingdetail', args=[self.pk])
     
     

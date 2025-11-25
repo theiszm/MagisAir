@@ -7,6 +7,7 @@ from .models import *
 from .forms import *
 from django.views.generic import TemplateView
 from django.db.models import Q
+from django.views.generic.edit import CreateView
 
 # Create your views here.
 
@@ -31,3 +32,29 @@ class CitySearchResultsView(ListView):
 class DestinationFlightsView(DetailView):
     model = City
     template_name = 'cityflightcheck.html'
+
+class FlightBookingView(CreateView):
+    model = Booking
+    form_class = BookingForm
+    template_name = 'booking.html'
+    success_url = reverse_lazy('bookings:mybookedflights')
+
+class MyBookedFlightsView(ListView):
+    model = Booking
+    template_name = 'mybookedflights.html'
+
+    def get_queryset(self):
+        return Booking.objects.filter(passenger__user=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        passenger = Passenger.objects.filter(user=self.request.user).first()
+        context['passenger'] = passenger
+        return context
+    
+class MyBookedFlightDetailView(DetailView):
+    model = Booking
+    template_name = 'mybookedflight.html'
+
+    def get_queryset(self):
+        return Booking.objects.filter(passenger__user=self.request.user)
