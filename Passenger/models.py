@@ -9,6 +9,16 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
+    passport_id = models.CharField(
+        max_length=20,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^[A-Z0-9]+$',   #for example, P1234567 or XX9876543
+                message="Passport number must contain only capital letters and digits."
+            )
+        ],
+    )
     phone_number = models.CharField(
         max_length=15,
         validators=[
