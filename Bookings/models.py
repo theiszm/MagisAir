@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import RegexValidator
+import string
+import random
 
 from Passenger.models import Passenger
 
@@ -77,7 +79,20 @@ class Flight(models.Model):
     def __str__(self):
         return f"{self.flight_code} — {self.route}"
     
+def generate_booking_ref():
+        letters = string.ascii_uppercase
+        digits = string.digits
+        combination = letters + digits
+        return ''.join(random.choices(combination, k=6))
+    
 class Booking(models.Model):
+    booking_ref = models.CharField(
+        max_length=6,
+        unique=True,
+        editable=False,
+        null=True,
+        blank=True,
+    )
     created_at = models.DateField(auto_created=True, auto_now_add=True)
     passenger = models.ForeignKey(
         Passenger,
@@ -97,8 +112,19 @@ class Booking(models.Model):
     BAGGAGE_UNIT_PRICE = 1000   # per 5kg unit
     TERMINAL_FEE_PRICE = 800    # always included, qty = 1
     INSURANCE_PRICE = 500       # if travel_insurance == True
-
-
+      
+    def save(self, *args, **kwargs):
+        # only generate number on first creation
+        if not self.booking_ref:   
+            ref = generate_booking_ref()
+    
+            # ensure uniqueness
+            while Booking.objects.filter(booking_ref=ref).exists():
+                ref = generate_booking_ref()
+    
+            self.booking_ref = ref
+            
+        super().save(*args, **kwargs)
     
     @property
     def total_cost(self):
@@ -117,7 +143,7 @@ class Booking(models.Model):
         return self.baggage_allowance_qty * self.BAGGAGE_UNIT_PRICE
 
     def __str__(self):
-        return f"Booking #{self.pk} — {self.passenger} on {self.flight}"
+        return f"Booking #{self.booking_ref} — {self.passenger} on {self.flight}"
     
     class Meta:
         unique_together = ('passenger', 'flight')
