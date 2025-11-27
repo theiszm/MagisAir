@@ -20,7 +20,7 @@ class PassengerForm(ModelForm):
         widgets = {
             "birthdate": DatePickerInput(
                 options={
-                    "format": '%Y-%m-%d',  
+                    "format": "YYYY-MM-DD",
                 },
                 attrs={
                     "class": "form-control",

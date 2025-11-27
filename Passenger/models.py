@@ -1,5 +1,7 @@
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
+
 
 from django.contrib.auth.models import User
 
@@ -23,17 +25,7 @@ class Passenger(models.Model):
             )
         ],
     )
-    phone_number = models.CharField(
-        max_length=15,
-        null=True,
-        blank=True,
-        validators=[
-            RegexValidator(
-                regex=r'^\+?1?\d{9,15}$',
-                message="Enter phone number in this format: +631234567890. This accepts up to 15 digits."
-            ),
-        ]
-    )
+    phone_number = PhoneNumberField(blank=True, null=True)
     birthdate = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=1, 
