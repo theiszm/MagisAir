@@ -1,4 +1,7 @@
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
+from django.core.validators import RegexValidator
+
 
 from django.contrib.auth.models import User
 
@@ -9,15 +12,20 @@ class Passenger(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    phone_number = models.CharField(
-        max_length=15,
+    passport_id = models.CharField(
+        verbose_name="Passport ID",
+        max_length=20,
+        unique=True,
+        null=True,
+        blank=True,
         validators=[
             RegexValidator(
-                regex=r'^\+?1?\d{9,15}$',
-                message="Enter phone number in this format: +631234567890. This accepts up to 15 digits."
-            ),
-        ]
+                regex=r'^[A-Z0-9]+$',   #for example, P1234567 or XX9876543
+                message="Passport number must contain only capital letters and digits."
+            )
+        ],
     )
+    phone_number = PhoneNumberField(blank=True, null=True)
     birthdate = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=1, 

@@ -18,5 +18,14 @@ class PassengerForm(ModelForm):
         model = Passenger
         exclude=['user']
         widgets = {
-            'birthdate': DatePickerInput(format='%Y-%m-%d'),
+            "birthdate": DatePickerInput(
+                options={
+                    "format": "YYYY-MM-DD",
+                },
+                attrs={
+                    "class": "form-control",
+                }
+            )
         }
+
+        
