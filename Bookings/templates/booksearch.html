@@ -1,17 +1,104 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
-{% block title %}TEST{% endblock %}
+{% block title %} | Find a Flight {% endblock title %}
 
 {% block content %}
 
-<h1>Search a destination</h1>
-<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+<div class="container my-5">
 
-<p>Which city or country do you want to go to?</p>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Find a Flight</h4>
+        </div>
 
-<form action="{% url 'bookings:destsearchresult' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-  <button type="submit">Search
-</form>
+        <div class="card-body">
+            <form method="get">
+
+                {{ form.media }}
+
+                <div class="row g-3">
+
+                    <!-- Origin -->
+                    <div class="col-md-4">
+                        <label class="form-label">{{ form.origin.label }}</label>
+                        {{ form.origin }}
+                        {% if form.origin.errors %}
+                            <div class="text-danger small">{{ form.origin.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Destination -->
+                    <div class="col-md-4">
+                        <label class="form-label">{{ form.destination.label }}</label>
+                        {{ form.destination }}
+                        {% if form.destination.errors %}
+                            <div class="text-danger small">{{ form.destination.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Departure date -->
+                    <div class="col-md-4">
+                        <label class="form-label">{{ form.departure_date.label }}</label>
+                        {{ form.departure_date }}
+                        {% if form.departure_date.errors %}
+                            <div class="text-danger small">{{ form.departure_date.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success w-100">
+                        Search Flights
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Search results -->
+    {% if flights %}
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Available Flights</h5>
+        </div>
+
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Flight Code</th>
+                        <th>Departure Date</th>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
+                        <th>Base Fare</th>
+                    </tr>
+                </thead>
+                <tbody>
+					{% for f in flights %}
+					<tr>
+						<td>{{ f.flight_code }}</td>
+						<td>{{ f.departure_date }}</td>
+						<td>{{ f.departure_time }}</td>
+						<td>{{ f.arrival_time }}</td>
+						<td>₱{{ f.base_fare }}</td>
+
+						<td class="text-end">
+							<a href="{% url 'bookings:booking' %}" class="btn btn-primary btn-sm">
+								Select flight
+							</a>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
 
 {% endblock %}
+

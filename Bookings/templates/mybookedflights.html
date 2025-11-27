@@ -13,7 +13,7 @@
 <ul>
   {% for booking in object_list %}
       <li>
-        <a href="{{ booking.get_absolute_url }}">{{ booking.flight.flight_code }}: Departs on {{ booking.flight.departure }} from {{ booking.flight.route.origin }}, and arrives on {{ booking.flight.arrival }} to {{ booking.flight.route.destination }}</a>
+        {{ booking.flight.flight_code }}: Departs on {{ booking.flight.departure }} from {{ booking.flight.route.origin }}, and arrives on {{ booking.flight.arrival }} to {{ booking.flight.route.destination }}
       </li>
   {% endfor %}
 </ul>

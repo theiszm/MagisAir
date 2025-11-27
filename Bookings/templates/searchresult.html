@@ -9,13 +9,16 @@
 
 <p>Here are the destinations that matches your search:</p>
 
-<ul>
-  {% for city in object_list %}
-    <li>
-      <a href="{{ city.get_absolute_url }}">{{ city.city }} ({{ city.iata_code }}), {{ city.country }}</a>
-    </li>
-  {% endfor %}
-</ul>
+{% for f in flights %}
+<tr>
+  <td>{{ f.flight_code }}</td>
+  <td>{{ f.origin_city }}</td>
+  <td>{{ f.destination_city }}</td>
+  <td>{{ f.departure_time }}</td>
+  <td>{{ f.arrival_time }}</td>
+  <td>{{ f.duration_minutes|divisibleby:60 }} hr {{ f.duration_minutes|mod:60 }} min</td>
+</tr>
+{% endfor %}
 
 <p>Select one to view flights available for the destination.</p>
 
