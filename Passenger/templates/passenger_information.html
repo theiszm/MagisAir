@@ -11,22 +11,54 @@
 		<form method="POST" action="">
 	        {% csrf_token %} 
 			{{ form.media }}
-	        {% bootstrap_form form set_placeholder=False%}
+	        {% bootstrap_form form set_placeholder=False %}
 	        <button type="submit" class="btn btn-secondary"> Update </button>
 	    
 		</form>
 	</div>
-	
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+
+<!-- Custom CSS: phone number field for Bootstrap -->
+<style>
+    /* Make intl-tel-input wrapper full width */
+    .iti {
+        width: 100%;
+    }
+
+    /* Match Bootstrap input height */
+    .iti input[type="tel"], 
+    .iti input[type="text"] {
+        height: calc(2.25rem + 2px) !important;
+        padding-right: 40px !important; /* space for dropdown arrow */
+    }
+
+    /* Ensure the flag dropdown aligns with Bootstrap rounding */
+    .iti__flag-container {
+        border-radius: 0.375rem 0 0 0.375rem;
+    }
+</style>
+
+<!-- intl-tel-input JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script>
-    const input = document.querySelector("#id_phone"); // Django's default ID
+    const input = document.querySelector("#id_phone_number");
+
     if (input) {
-        window.intlTelInput(input, {
+        const iti = window.intlTelInput(input, {
             initialCountry: "ph",
+            nationalMode: false,  // <--- always include +63 etc
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        // On submit, force the value to E.164 format (e.g. +639053359524)
+        input.form.addEventListener("submit", function () {
+            input.value = iti.getNumber();  // E.164 format for phonenumber_field
         });
     }
 </script>
-	
+
+
 {% endblock %}
