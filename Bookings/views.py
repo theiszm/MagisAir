@@ -29,8 +29,10 @@ def search_flights(request):
             Bookings_flight.flight_code,
             origin_city.city,
             destination_city.city,
+            DATE(Bookings_flight.departure),
             TIME(Bookings_flight.departure),
             TIME(Bookings_flight.arrival),
+            Bookings_flight.base_fare,
             CAST(
                 (JULIANDAY(Bookings_flight.arrival)
                  - JULIANDAY(Bookings_flight.departure)) * 1440
@@ -55,12 +57,15 @@ def search_flights(request):
         # map the tuple rows into a clean list of dictionaries
         for row in rows:
             flights.append({
+
                 "flight_code": row[0],
                 "origin_city": row[1],
                 "destination_city": row[2],
-                "departure_time": row[3],
-                "arrival_time": row[4],
-                "duration_minutes": row[5],
+                "departure_date": row[3],
+                "departure_time": row[4],
+                "arrival_time": row[5],
+                "base_fare": row[6],
+                "duration_minutes": row[7],
             })
 
     return render(request, "booksearch.html", {
