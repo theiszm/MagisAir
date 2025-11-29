@@ -206,13 +206,13 @@
                         <td>This flight costs PHP{{ booking.flight.base_fare }}.</td>
                     </tr>
                     <tr>
-                        <td>You have {{ booking.baggage_allowance_qty }} baggage booked in. This costs PHP{{ booking.baggage_allowance_price_product }}.</td>
+                        <td>You have {{ booking.baggage_allowance_qty }} {% if booking.baggage_allowance_qty == 1%}baggage{% else %}baggages{% endif %} booked in. This costs PHP{{ booking.baggage_allowance_price_product }}.</td>
                     </tr>
                     <tr>
                         <td>{% if booking.travel_insurance %}You have opted to include travel insurance in your booking. This costs PHP{{ booking.INSURANCE_PRICE }}.{% else %}You have opted not to include travel insurance in your booking.{% endif %}</td>
                     </tr>
                     <tr>
-                        <td>As compliance to airport regulations, you have a PHP{{ booking.TERMINAL_FEE_PRICE }} terminal fee as part of your booking.</td>
+                        <td>As compliance with airport regulations, you have a PHP{{ booking.TERMINAL_FEE_PRICE }} terminal fee as part of your booking.</td>
                     </tr>
                     <tr>
                         <td>In total, your booking costs PHP{{ booking.total_cost }}.</td>
@@ -221,7 +221,7 @@
             </table>
             <td class="text-end">
 				<a href=" {% url 'bookings:itinerary' booking.id %}" class="btn btn-success btn-sm">
-					Show in Itinerary Form
+					Print Itinerary
 				</a>
 			</td>
         </div>
