@@ -22,7 +22,9 @@ class FlightSearchForm(forms.Form):
     departure_date = forms.DateField(
         label="Departure date",
         widget=DatePickerInput(
-            format='%Y-%m-%d',
+            options={
+                "format": "YYYY-MM-DD",  # NEW correct way
+            },
             attrs={
                 "placeholder": "Select date",
                 "class": "form-control",
