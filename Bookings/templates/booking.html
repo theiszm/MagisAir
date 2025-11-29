@@ -6,51 +6,53 @@
 {% block content %}
 
 <div class="content">
-    <h3>Book Flight</h3><br>
 
-    {# Flight & Passenger details card #}
-    {% if flight %}
-    <div class="card mb-3 p-3 shadow-sm" style="max-width: 500px;">
-        <p><h5 class="mb-2">Booking Details</h5></p>
+	{% if request.user.is_authenticated %}
 
-        {% if passenger %}
-            <p><strong>Passenger:</strong>
-                {# adjust to your actual Passenger fields #}
-                {{ passenger.formal_name|default:passenger }}
-            </p>
-        {% endif %}
+		<h3>Book Flight</h3><br>
 
-        <p><strong>Flight:</strong> {{ flight.flight_code }}</p>
+		{# Flight & Passenger details card #}
+		{% if flight %}
+			<div class="card mb-3 p-3 shadow-sm" style="max-width: 500px;">
+				<p><h5 class="mb-2">Booking Details</h5></p>
 
-        <p>
-            <strong>Route:</strong>
-            {{ flight.route.origin.city }} ({{ flight.route.origin.iata_code }})
-            →
-            {{ flight.route.destination.city }} ({{ flight.route.destination.iata_code }})
-        </p>
+				{% if passenger %}
+					<p><strong>Passenger:</strong>
+						{# adjust to your actual Passenger fields #}
+						{{ passenger.formal_name|default:passenger }}
+					</p>
+				{% endif %}
 
-        <p>
-            <strong>Departure:</strong>
-            {{ flight.departure|date:"Y-m-d" }} at {{ flight.departure|time:"H:i" }}
-        </p>
+				<p><strong>Flight:</strong> {{ flight.flight_code }}</p>
 
-			<form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% bootstrap_form form set_placeholder=False %}
-                <button type="submit" class="btn btn-secondary">Book this flight</button>
-            </form>
+				<p>
+					<strong>Route:</strong>
+					{{ flight.route.origin.city }} ({{ flight.route.origin.iata_code }})
+					→
+					{{ flight.route.destination.city }} ({{ flight.route.destination.iata_code }})
+				</p>
 
+				<p>
+					<strong>Departure:</strong>
+					{{ flight.departure|date:"Y-m-d" }} at {{ flight.departure|time:"H:i" }}
+				</p>
 
-    </div>
+					<form method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						{% bootstrap_form form set_placeholder=False %}
+						<button type="submit" class="btn btn-secondary">Book this flight</button>
+					</form>
+			</div>
+		{% endif %}
+	
+	{% else %}
+		<div style="width:400px;">
+		<p>Please <a href="{% url 'login' %}">log in</a> to book a flight.</p>
+		</div>
     {% endif %}
 
-    <div style="width:400px;">
-        {% if request.user.is_authenticated %}
-           
-        {% else %}
-            <p>Please <a href="{% url 'login' %}">log in</a> to book a flight.</p>
-        {% endif %}
-    </div>
+        
+    
 </div>
 
 {% endblock %}

@@ -1,3 +1,6 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -14,6 +17,7 @@ from django.db import IntegrityError, transaction, connection
 def index(request):
     return HttpResponse("Hello, world!")
 
+@login_required(login_url='login')
 def search_flights(request):
     form = FlightSearchForm(request.GET or None)
     flights = []
@@ -85,7 +89,7 @@ class DestinationFlightsView(DetailView):
     model = City
     template_name = 'cityflightcheck.html'
 
-class FlightBookingView(CreateView):
+class FlightBookingView(LoginRequiredMixin, CreateView):
     model = Booking
     form_class = BookingForm
     template_name = 'booking.html'
