@@ -30,7 +30,7 @@ class PassengerInfoView(LoginRequiredMixin, UpdateView):
     template_name = 'passenger_information.html'
     
     def get_success_url(self):
-        return reverse('home')
+        return reverse('bookings:home')
 		
 
 		

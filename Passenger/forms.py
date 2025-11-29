@@ -10,9 +10,10 @@ from .models import Passenger
 
 
 class SignupForm(UserCreationForm):
-    class Meta: 
+    class Meta:
         model = User
         fields = ['username', 'email']
+
 
 class PassengerForm(ModelForm):
     """A form for updating passenger information."""
@@ -23,7 +24,16 @@ class PassengerForm(ModelForm):
                 "class": "form-control",
                 "placeholder": "Enter phone number",
                 "autocomplete": "off",
-                "style": "padding-left: 50px;"
+                "style": "padding-left: 50px;",
+            }
+        ),
+        required=False,
+    )
+
+    birthdate = forms.DateField(
+        widget=DatePickerInput(
+            options={
+                "format": "YYYY-MM-DD",   # Correct modern format placement
             }
         ),
         required=False,
@@ -32,13 +42,3 @@ class PassengerForm(ModelForm):
     class Meta:
         model = Passenger
         exclude = ['user']
-        widgets = {
-            "birthdate": DatePickerInput(
-                options={"format": "YYYY-MM-DD"},
-                attrs={"class": "form-control"},
-            ),
-        }
-
-        
-
-        
