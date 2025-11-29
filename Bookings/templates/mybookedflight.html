@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block title %}{% endblock %}
 
 {% block content %}<style>
@@ -214,10 +215,15 @@
                         <td>As compliance to airport regulations, you have a PHP{{ booking.TERMINAL_FEE_PRICE }} terminal fee as part of your booking.</td>
                     </tr>
                     <tr>
-                        <td>In total, your booking costs US${{ booking.total_cost }}.</td>
+                        <td>In total, your booking costs PHP{{ booking.total_cost }}.</td>
                     </tr>
                 </tbody>
             </table>
+            <td class="text-end">
+				<a href=" {% url 'bookings:itinerary' booking.id %}" class="btn btn-success btn-sm">
+					Show in Itinerary Form
+				</a>
+			</td>
         </div>
     </div>
 </div>
