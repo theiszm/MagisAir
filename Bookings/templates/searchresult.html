@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}TEST{% endblock %}
+
+{% block content %}
+
+<h1>Search a destination</h1>
+<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+
+<p>Here are the destinations that matches your search:</p>
+
+{% for f in flights %}
+<tr>
+  <td>{{ f.flight_code }}</td>
+  <td>{{ f.origin_city }}</td>
+  <td>{{ f.destination_city }}</td>
+  <td>{{ f.departure_time }}</td>
+  <td>{{ f.arrival_time }}</td>
+  <td>{{ f.duration_minutes|divisibleby:60 }} hr {{ f.duration_minutes|mod:60 }} min</td>
+</tr>
+{% endfor %}
+
+<p>Select one to view flights available for the destination.</p>
+
+{% endblock %}

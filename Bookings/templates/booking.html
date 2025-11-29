@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}TEST{% endblock %}
+
+{% block content %}
+
+<h1>Book a flight</h1>
+<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+    
+{% if request.user.is_authenticated %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <input type="submit" value="Submit">
+    </form>
+{% else %}
+    <p>Please <a href="{% url 'login' %}">log in</a> to book a flight.</p>
+{% endif %}
+
+
+{% endblock %}

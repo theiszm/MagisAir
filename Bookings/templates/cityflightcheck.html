@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}TEST{% endblock %}
+
+{% block content %}
+
+<h1>Search a destination</h1>
+<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+
+<p>Here are the flights for</p>
+
+<h2>{{ object.city }} ({{ object.iata_code }})</h2>
+
+<p>Click a flight to book.</p>
+
+<ul>
+  {% for route in object.destinations.all %}
+    {% for flight in route.flight_set.all %}
+      <li>
+        <a href="{% url 'bookings:booking' %}?flight_id={{ flight.pk }}">{{ flight.flight_code }}: Departs on {{ flight.departure }} from {{ flight.route.origin }}, and arrives on {{ flight.arrival }} to {{ flight.route.destination }}</a>
+      </li>
+    {% endfor %}
+  {% endfor %}
+</ul>
+
+{% endblock %}

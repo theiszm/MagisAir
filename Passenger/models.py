@@ -2,7 +2,6 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
 
-
 from django.contrib.auth.models import User
 
 class Passenger(models.Model):
@@ -18,12 +17,6 @@ class Passenger(models.Model):
         unique=True,
         null=True,
         blank=True,
-        validators=[
-            RegexValidator(
-                regex=r'^[A-Z0-9]+$',   #for example, P1234567 or XX9876543
-                message="Passport number must contain only capital letters and digits."
-            )
-        ],
     )
     phone_number = PhoneNumberField(blank=True, null=True)
     birthdate = models.DateField(null=True, blank=True)

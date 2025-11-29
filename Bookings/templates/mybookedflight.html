@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}TEST{% endblock %}
+
+{% block content %}
+
+<h1>Booking Confirmation</h1>
+<p><b>Warning</b>: This website is for testing models for now. It can be unstable.</p>
+
+{% if request.user.is_authenticated %}
+<h2>{{ booking.flight.flight_code }}</h2>
+
+<p>This flight departs on {{ booking.flight.departure }} from {{ booking.flight.route.origin }}.</p>
+
+<p>This flight arrives on {{ booking.flight.arrival }} to {{ booking.flight.route.destination }}.</p>
+
+<p>This flight costs US${{ booking.flight.base_fare }}.</p>
+
+<p>You have {{ booking.baggage_allowance_qty }} baggage booked in. This costs US${{ booking.baggage_allowance_price_product }}.</p>
+
+{% if booking.travel_insurance %}
+<p>You have opted to include travel insurance in your booking. This costs US$500.</p>
+{% else %}
+<p>You have opted not to include travel insurance in your booking.</p>
+{% endif %}
+
+<p>As compliance to airport regulations, you have a US$800 terminal fee as part of your booking.</p>
+
+<p>In total, your booking costs US${{ booking.total_cost }}.</p>
+
+{% endif %}
+
+{% endblock %}
