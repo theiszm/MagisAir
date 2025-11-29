@@ -119,7 +119,27 @@ class FlightBookingView(LoginRequiredMixin, CreateView):
         context["passenger"] = passenger
 
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        # get passenger record
+        passenger = Passenger.objects.filter(user=request.user).first()
+    
+        # if passenger record missing
+        if not passenger:
+            return HttpResponseRedirect(
+                reverse_lazy('Passenger:update', kwargs={'pk': request.user.pk})
+            )
+    
+        # if important fields are missing
+        if not passenger.first_name or not passenger.last_name:
+            messages.warning(request, "Please complete your passenger profile before booking.")
+            return HttpResponseRedirect(
+                reverse_lazy('Passenger:update', kwargs={'pk': passenger.pk})
+            )
+    
+        return super().dispatch(request, *args, **kwargs)
 
+    
     def form_valid(self, form):
         # Attach passenger + flight to instance
         passenger = Passenger.objects.get(user=self.request.user)
