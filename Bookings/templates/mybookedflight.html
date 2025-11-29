@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}TEST{% endblock %}
+{% block title %}{% endblock %}
 
 {% block content %}<style>
 
@@ -71,12 +71,132 @@
 
 <div class="container my-5">
     <div class="card shadow-sm">
+        <div class="card-header ">
+            <h4 class="mb-0 section-title text-center">FLIGHT BOOKING</h4>
+        </div>
+
+        <div class="card-body">
+
+            {# --- TOP SUMMARY ROW (Passenger + Date + Total) --- #}
+            <div class="d-flex justify-content-between mb-2">
+                <div>
+                    <strong>Passenger:</strong>
+                    {{ booking.passenger.first_name }} {{ booking.passenger.last_name }}
+                </div>
+                <div>
+                    <strong>Date:</strong> {{ booking.created_at|date:"d M Y" }}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <strong>Birth Date:</strong>
+                    {{ booking.passenger.birthdate|date:"F j, Y" }}
+                    {% if booking.passenger.gender %}
+                        &nbsp; &nbsp; <strong>Gender:</strong> {{ booking.passenger.gender }}
+                    {% endif %}
+                </div>
+                <div>
+                    <strong>Total Cost:</strong>
+                    Php {{ booking.total_cost|floatformat:2 }}
+                </div>
+            </div>
+
+            {# --- TRIP ITINERARY TABLE --- #}
+            <h5 class="mt-3 mb-2 text-center section-title-small">TRIP ITINERARY</h5>
+            <table class="table table-bordered table-sm align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>Flight</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Duration</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ booking.flight.flight_code }}</td>
+                        <td>{{ booking.flight.route.origin.city }}</td>
+                        <td>{{ booking.flight.route.destination.city }}</td>
+                        <td>
+                            {{ booking.flight.departure|date:"d M Y, H:i" }}
+                        </td>
+                        <td>
+                            {{ booking.flight.arrival|date:"d M Y, H:i" }}
+                        </td>
+                        <td>
+                            {# Optional: show duration if you add a property on Flight or Booking #}
+                            {% if booking.flight.duration %}
+                                {{ booking.flight.duration }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td>Php {{ booking.flight.base_fare|floatformat:2 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {# --- ADDITIONAL ITEMS TABLE --- #}
+            <h5 class="mt-4 mb-2 text-center section-title-small">ADDITIONAL ITEMS</h5>
+            <table class="table table-bordered table-sm align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Description</th>
+                        <th class="text-center">Qty</th>
+                        <th class="text-end">Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Additional baggage allowance ({{ booking.baggage_allowance_qty }} kg)
+                        </td>
+                        <td class="text-center">
+                            {{ booking.baggage_allowance_qty }}
+                        </td>
+                        <td class="text-end">
+                            Php {{ booking.baggage_allowance_price_product|floatformat:2 }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Terminal Fees</td>
+                        <td class="text-center">1</td>
+                        <td class="text-end">
+                            Php {{ booking.TERMINAL_FEE_PRICE|floatformat:2 }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Travel Insurance</td>
+                        <td class="text-center">
+                            {% if booking.travel_insurance %}1{% else %}0{% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if booking.travel_insurance %}
+                                Php {{ booking.INSURANCE_PRICE|floatformat:2 }}
+                            {% else %}
+                                Php 0.00
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="card shadow-sm">
         <div class="card-header">
             <h4 class="mb-0 section-title">My Currently Booked Flights</h4>
         </div>
         <div class="card-body">
             <table class="table table-striped">
-                <h5 class="mt-4 mb-3 section-title-small">{{ booking.flight.flight_code }}</h5>
+<!--                <h5 class="mt-4 mb-3 section-title-small">{{ booking.flight.flight_code }}</h5>-->
                 <tbody>
                     <tr>
                         <td>This flight departs on {{ booking.flight.departure }} from {{ booking.flight.route.origin }}.</a></td>
@@ -104,4 +224,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
