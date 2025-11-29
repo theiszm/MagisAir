@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 
-{% block title %} | My Booked Flights {% endblock title %}
+{% block title %} | My Flight Itinerary {% endblock title %}
 
 {% block content %}
 
@@ -75,9 +75,30 @@
 <div class="container my-5">
     <div class="card shadow-sm">
         <div class="card-header">
-            <h4 class="mb-0 section-title">My Currently Booked Flights</h4>
+            <h4 class="mb-0 section-title">My Flight Itinerary</h4>
         </div>
         <div class="card-body">
+            <table class="table table-striped">
+                <thread>
+                    <tr>
+                        <th>Passenger</th>
+                        <th>Birthdate</th>
+                        <th>Gender</th>
+                        <th>Total Cost</th>
+                        <th>Date of Booking</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    <tr>
+                        <td>{{ booking.passenger.first_name }} {{ booking.passenger.last_name }}</td>
+                        <td>{{ booking.passenger.birthdate }}</td>
+                        <td>{{ booking.passenger.gender }}</td>
+                        <td>P{{ booking.total_cost }}</td>
+                        <td>{{ booking.created_at }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 class="mt-4 mb-3 section-title-small">Trip Itinerary</h5>
             <table class="table table-striped">
                 <thread>
                     <tr>
@@ -92,7 +113,6 @@
                 </thread>
                 <tbody>
                     <tr>
-                      {% for booking in object_list %}
                         <td>{{ booking.flight.flight_code }}</td>
                         <td>{{ booking.flight.route.origin }}</td>
                         <td>{{ booking.flight.route.destination }}</td>
@@ -100,13 +120,33 @@
                         <td>{{ booking.flight.arrival }}</td>
                         <td>{{ booking.flight.duration }}</td>
                         <td>P{{ booking.flight.base_fare }}</td>
-
-                        <td class="text-end">
-                            <a href="{% url 'bookings:itinerary' booking.id %}" class="btn btn-success btn-sm">
-                                Show Itinerary
-                            </a>
-                        </td>
-                      {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <h5 class="mt-4 mb-3 section-title-small">Additional Items</h5>
+            <table class="table table-striped">
+                <thread>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Cost</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    <tr>
+                        <td>Additional baggage allowance (5 kg)</td>
+                        <td>{{ booking.baggage_allowance_qty }}</td>
+                        <td>P{{ booking.baggage_allowance_price_product }}</td>
+                    </tr>
+                    <tr>
+                        <td>Terminal Fees</td>
+                        <td>1</td>
+                        <td>P800</td>
+                    </tr>
+                    <tr>
+                        <td>Travel Insurance</td>
+                        <td>{% if booking.travel_insurance %}1{% else %}0{% endif %}</td>
+                        <td>P{% if booking.travel_insurance %}500{% else %}0{% endif %}</td>
                     </tr>
                 </tbody>
             </table>

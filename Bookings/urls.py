@@ -8,6 +8,7 @@ urlpatterns = [
     path('booking', views.FlightBookingView.as_view(), name='booking'),
     path('mybookedflights', views.MyBookedFlightsView.as_view(), name='mybookedflights'),
     path('mybookedflights/<int:pk>/', views.MyBookedFlightDetailView.as_view(), name='bookingdetail'),
+    path('itinerary/<int:pk>/', views.ShowItineraryView.as_view(), name='itinerary'),
 ]
 
 app_name = 'bookings'
