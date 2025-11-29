@@ -29,7 +29,7 @@ class Passenger(models.Model):
     birthdate = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=1, 
-        choices=[('F', 'Female'), ('M', 'Male')], 
+        choices=[('F', 'Female'), ('M', 'Male'), ('O', 'Other')], 
         default='', null=True, blank=True, 
     )
     
