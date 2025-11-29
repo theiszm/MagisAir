@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %} | My Flight Itinerary {% endblock title %}
+
+{% block content %}
+
+<style>
+
+    /* Page background */
+    body {
+        background-color: #f3f6ff;
+    }
+
+    /* Navy theme for headers */
+    .navy-header {
+		background-color: #e8efff !important;
+		color: #001060 !important;
+	}
+
+    .navy-header-light {
+        background-color: #001060 !important;
+        color: white !important;
+    }
+
+
+    /* Buttons */
+    .btn-navy {
+        background-color: #003b99;
+        border-color: #003b99;
+        color: white;
+    }
+
+    .btn-navy:hover {
+        background-color: #002e7a;
+        border-color: #002e7a;
+        color: white;
+    }
+
+    /* Card rounding */
+    .card {
+        border-radius: 10px;
+    }
+	
+	.card-header {
+		font-family: var(--bs-body-font-family) !important;
+		font-size: 1.1rem !important;
+		font-weight: 500 !important;
+		color: var(--bs-body-color) !important;  /* <-- This forces dark text */
+	}
+	
+	.card-body {
+    background-color: #ffffff !important;
+}
+	
+	.table thead th {
+        background-color: #f8f9fc !important;
+        color: #555 !important;
+        font-weight: 500;
+    }
+	
+	.section-title {
+    font-weight: 500;       /* lighter than bold */
+    letter-spacing: 0.3px;  /* cleaner look */
+	}
+
+	.section-title-small {
+		font-weight: 500;
+		font-size: 1.05rem;
+		letter-spacing: 0.3px;
+	}
+
+</style>
+
+<div class="container my-5">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h4 class="mb-0 section-title">My Flight Itinerary</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thread>
+                    <tr>
+                        <th>Passenger</th>
+                        <th>Birthdate</th>
+                        <th>Gender</th>
+                        <th>Total Cost</th>
+                        <th>Date of Booking</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    <tr>
+                        <td>{{ booking.passenger.first_name }} {{ booking.passenger.last_name }}</td>
+                        <td>{{ booking.passenger.birthdate }}</td>
+                        <td>{{ booking.passenger.gender }}</td>
+                        <td>P{{ booking.total_cost }}</td>
+                        <td>{{ booking.created_at }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 class="mt-4 mb-3 section-title-small">Trip Itinerary</h5>
+            <table class="table table-striped">
+                <thread>
+                    <tr>
+                        <th>Flight Number</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Duration</th>
+                        <th>Cost</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    <tr>
+                        <td>{{ booking.flight.flight_code }}</td>
+                        <td>{{ booking.flight.route.origin }}</td>
+                        <td>{{ booking.flight.route.destination }}</td>
+                        <td>{{ booking.flight.departure }}</td>
+                        <td>{{ booking.flight.arrival }}</td>
+                        <td>{{ booking.flight.duration }}</td>
+                        <td>P{{ booking.flight.base_fare }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 class="mt-4 mb-3 section-title-small">Additional Items</h5>
+            <table class="table table-striped">
+                <thread>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Cost</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    <tr>
+                        <td>Additional baggage allowance (5 kg)</td>
+                        <td>{{ booking.baggage_allowance_qty }}</td>
+                        <td>P{{ booking.baggage_allowance_price_product }}</td>
+                    </tr>
+                    <tr>
+                        <td>Terminal Fees</td>
+                        <td>1</td>
+                        <td>P800</td>
+                    </tr>
+                    <tr>
+                        <td>Travel Insurance</td>
+                        <td>{% if booking.travel_insurance %}1{% else %}0{% endif %}</td>
+                        <td>P{% if booking.travel_insurance %}500{% else %}0{% endif %}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

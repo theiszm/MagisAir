@@ -185,3 +185,10 @@ class MyBookedFlightDetailView(DetailView):
 
     def get_queryset(self):
         return Booking.objects.filter(passenger__user=self.request.user)
+    
+class ShowItineraryView(DetailView):
+    model = Booking
+    template_name = 'itinerary.html'
+
+    def get_queryset(self):
+        return Booking.objects.filter(passenger__user=self.request.user)
