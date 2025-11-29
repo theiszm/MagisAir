@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -8,9 +8,8 @@ from .forms import *
 from django.views.generic import TemplateView
 from django.db.models import Q
 from django.views.generic.edit import CreateView
-from django.db import connection
+from django.db import IntegrityError, transaction, connection
 
-# Create your views here.
 
 def index(request):
     return HttpResponse("Hello, world!")
@@ -26,6 +25,7 @@ def search_flights(request):
 
         sql = """
         SELECT
+			Bookings_flight.id, 
             Bookings_flight.flight_code,
             origin_city.city,
             destination_city.city,
@@ -57,15 +57,15 @@ def search_flights(request):
         # map the tuple rows into a clean list of dictionaries
         for row in rows:
             flights.append({
-
-                "flight_code": row[0],
-                "origin_city": row[1],
-                "destination_city": row[2],
-                "departure_date": row[3],
-                "departure_time": row[4],
-                "arrival_time": row[5],
-                "base_fare": row[6],
-                "duration_minutes": row[7],
+				"id": row[0],               
+                "flight_code": row[1],
+                "origin_city": row[2],
+                "destination_city": row[3],
+                "departure_date": row[4],
+                "departure_time": row[5],
+                "arrival_time": row[6],
+                "base_fare": row[7],
+                "duration_minutes": row[8],
             })
 
     return render(request, "booksearch.html", {
@@ -89,7 +89,46 @@ class FlightBookingView(CreateView):
     model = Booking
     form_class = BookingForm
     template_name = 'booking.html'
-    success_url = reverse_lazy('bookings:mybookedflights')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        flight_id = self.request.GET.get("flight_id")
+        if flight_id:
+            initial["flight"] = flight_id
+        return initial
+
+    def form_valid(self, form):
+        # Attach passenger + flight to instance
+        passenger = Passenger.objects.get(user=self.request.user)
+        flight_id = self.request.GET.get("flight_id")
+
+        if not flight_id:
+            form.add_error(None, "No flight selected.")
+            return self.form_invalid(form)
+
+        form.instance.passenger = passenger
+        form.instance.flight_id = flight_id
+
+        try:
+            # Try saving inside an atomic block so IntegrityError is catchable
+            with transaction.atomic():
+                response = super().form_valid(form)
+        except IntegrityError as e:
+            # ❗ Here we convert the DB error into a form error
+            form.add_error(
+                None,
+                "Booking with this Flight and Passenger already exists."
+            )
+            return self.form_invalid(form)
+
+        return response
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'bookings:bookingdetail',
+            kwargs={'pk': self.object.pk}
+        )
+
 
 class MyBookedFlightsView(ListView):
     model = Booking

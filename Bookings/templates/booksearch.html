@@ -146,7 +146,7 @@
                         <td>₱{{ f.base_fare }}</td>
 
                         <td class="text-end">
-                            <a href="{% url 'bookings:booking' %}" class="btn btn-success btn-sm">
+                            <a href="{% url 'bookings:booking' %}?flight_id={{ f.id }}" class="btn btn-success btn-sm">
                                 Select flight
                             </a>
                         </td>

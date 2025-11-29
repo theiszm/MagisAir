@@ -5,7 +5,8 @@ from bootstrap_datepicker_plus.widgets import DatePickerInput
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = '__all__'
+        exclude = ['passenger', 'flight']
+
 
 class FlightSearchForm(forms.Form):
     origin = forms.ModelChoiceField(
