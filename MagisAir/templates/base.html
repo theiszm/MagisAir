@@ -24,6 +24,11 @@
 				<ul class="navbar-nav">
 	              	{% if user.is_authenticated %}
 						<li class="nav-item">
+		                	<a class="nav-item nav-link" href="{% url 'bookings:mybookedflights' %}" > 
+								<i class="bi bi-suitcase-lg-fill"></i>
+							</a>
+						</li>
+						<li class="nav-item">
 		                	<a class="nav-item nav-link" href="{% url 'passenger:update' request.user.pk %}" > 
 								<i class="bi bi-person-circle"></i>
 							</a>

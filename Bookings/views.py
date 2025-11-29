@@ -6,13 +6,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from .models import *
-from .forms import *
 from django.views.generic import TemplateView
 from django.db.models import Q
 from django.views.generic.edit import CreateView
 from django.db import IntegrityError, transaction, connection
+from django.utils import timezone
 
+from .models import *
+from .forms import *
 
 def index(request):
     return HttpResponse("Hello, world!")
@@ -152,17 +153,30 @@ class FlightBookingView(LoginRequiredMixin, CreateView):
         )
 
 
-class MyBookedFlightsView(ListView):
+class MyBookedFlightsView(LoginRequiredMixin, ListView):
     model = Booking
     template_name = 'mybookedflights.html'
+    login_url = 'login'
 
     def get_queryset(self):
-        return Booking.objects.filter(passenger__user=self.request.user)
-    
+        # base queryset for this user
+        return (
+            Booking.objects
+            .filter(passenger__user=self.request.user)
+            .select_related('flight__route__origin', 'flight__route__destination')
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         passenger = Passenger.objects.filter(user=self.request.user).first()
         context['passenger'] = passenger
+
+        now = timezone.now()
+
+        qs = self.get_queryset()
+        context['upcoming_trips'] = qs.filter(flight__departure__gte=now).order_by('flight__departure')
+        context['travel_history'] = qs.filter(flight__departure__lt=now).order_by('-flight__departure')
+
         return context
     
 class MyBookedFlightDetailView(DetailView):
