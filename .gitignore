@@ -1,4 +1,6 @@
 .env
+.venv/
+*/migrations/*.py
 .project
 .pydevproject
 .vscode
