@@ -96,6 +96,24 @@ class FlightBookingView(CreateView):
         if flight_id:
             initial["flight"] = flight_id
         return initial
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the selected flight from the ?flight_id=... query param
+        flight_id = self.request.GET.get("flight_id")
+        if flight_id:
+            flight = Flight.objects.select_related(
+                "route__origin",
+                "route__destination",
+            ).get(pk=flight_id)
+            context["flight"] = flight
+
+        # Get the logged-in passenger
+        passenger = Passenger.objects.filter(user=self.request.user).first()
+        context["passenger"] = passenger
+
+        return context
 
     def form_valid(self, form):
         # Attach passenger + flight to instance

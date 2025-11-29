@@ -106,7 +106,10 @@ class Booking(models.Model):
     )
     
     # each unit = 5kg extra baggage, for example
-    baggage_allowance_qty = models.PositiveIntegerField(default=0)
+    baggage_allowance_qty = models.PositiveIntegerField(
+        verbose_name="Baggage allowance",
+        default=0
+    )
     travel_insurance = models.BooleanField(default=False)
     
     BAGGAGE_UNIT_PRICE = 1000   # per 5kg unit

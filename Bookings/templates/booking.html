@@ -6,12 +6,12 @@
 {% block content %}
 
 <div class="content">
-    <h3>Book Flight</h3>
+    <h3>Book Flight</h3><br>
 
     {# Flight & Passenger details card #}
     {% if flight %}
     <div class="card mb-3 p-3 shadow-sm" style="max-width: 500px;">
-        <h5 class="mb-2">Booking Details</h5>
+        <p><h5 class="mb-2">Booking Details</h5></p>
 
         {% if passenger %}
             <p><strong>Passenger:</strong>
@@ -29,26 +29,24 @@
             {{ flight.route.destination.city }} ({{ flight.route.destination.iata_code }})
         </p>
 
-        {# If your Flight model uses a single DateTimeField "departure" #}
         <p>
             <strong>Departure:</strong>
             {{ flight.departure|date:"Y-m-d" }} at {{ flight.departure|time:"H:i" }}
         </p>
 
-        {# If instead you have separate fields like departure_date / departure_time,
-           comment the above <p> and use this instead:
-           <p><strong>Departure:</strong> {{ flight.departure_date }} at {{ flight.departure_time }}</p>
-        #}
+			<form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form set_placeholder=False %}
+                <button type="submit" class="btn btn-secondary">Book this flight</button>
+            </form>
+
+
     </div>
     {% endif %}
 
     <div style="width:400px;">
         {% if request.user.is_authenticated %}
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% bootstrap_form form set_placeholder=False %}
-                <button type="submit" class="btn btn-secondary">Book this flight</button>
-            </form>
+           
         {% else %}
             <p>Please <a href="{% url 'login' %}">log in</a> to book a flight.</p>
         {% endif %}
