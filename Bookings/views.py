@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -85,7 +86,7 @@ class DestinationFlightsView(DetailView):
     model = City
     template_name = 'cityflightcheck.html'
 
-class FlightBookingView(CreateView):
+class FlightBookingView(LoginRequiredMixin, CreateView):
     model = Booking
     form_class = BookingForm
     template_name = 'booking.html'
