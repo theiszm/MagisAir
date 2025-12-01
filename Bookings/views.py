@@ -29,8 +29,7 @@ def search_flights(request):
         date = form.cleaned_data["departure_date"]
 
         sql = """
-        SELECT
-			Bookings_flight.id, 
+        SELECT Bookings_flight.id, 
             Bookings_flight.flight_code,
             origin_city.city,
             destination_city.city,

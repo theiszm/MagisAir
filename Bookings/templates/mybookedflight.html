@@ -205,9 +205,11 @@
                     <tr>
                         <td>This flight costs PHP{{ booking.flight.base_fare }}.</td>
                     </tr>
-                    <tr>
-                        <td>You have {{ booking.baggage_allowance_qty }} {% if booking.baggage_allowance_qty == 1%}baggage{% else %}baggages{% endif %} booked in. This costs PHP{{ booking.baggage_allowance_price_product }}.</td>
-                    </tr>
+					{% if booking.baggage_allowance_qty >= 1 %}
+	                    <tr>
+	                        <td>You have {{ booking.baggage_allowance_qty }} unit/s of baggage allowance booked in. This costs PHP{{ booking.baggage_allowance_price_product }}.</td>
+	                    </tr>
+					{% endif %} 
                     <tr>
                         <td>{% if booking.travel_insurance %}You have opted to include travel insurance in your booking. This costs PHP{{ booking.INSURANCE_PRICE }}.{% else %}You have opted not to include travel insurance in your booking.{% endif %}</td>
                     </tr>

@@ -87,6 +87,7 @@ def generate_booking_ref():
     
 class Booking(models.Model):
     booking_ref = models.CharField(
+        verbose_name="Booking reference",
         max_length=6,
         unique=True,
         editable=False,
