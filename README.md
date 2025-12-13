@@ -1,6 +1,6 @@
 # Magis Air
 
-Magis Air operates international flights supported by an information system that manages flight schedules and monitors on-time performance. The system ensures accurate recording of departures and arrivals based on predefined schedules.
+Magis Air operates international flights supported by an information system that manages flight schedules and passenger bookings. The system maintains a database of scheduled and actual departure and arrival times.
 
 Load SQL sample data:
 ```ps
