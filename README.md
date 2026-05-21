@@ -1,6 +1,6 @@
 # Magis Air
 
-Magis Air is an excellent airline that operates international flights. Because they constantly strive to be the best, Magis Air is always on time. They always depart and arrive as scheduled.
+Magis Air operates international flights supported by an information system that manages flight schedules and passenger bookings. The system maintains a database of scheduled departure and arrival times.
 
 Load SQL sample data:
 ```ps
