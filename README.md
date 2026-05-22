@@ -7,8 +7,13 @@ Load SQL sample data:
 python manage.py load_all_sql
 ```
 
+
+![](https://github.com/theiszm/MagisAir/blob/main/MagisAir/static/images/preview_images/preview_0.PNG)
+
 ![](https://github.com/theiszm/MagisAir/blob/main/MagisAir/static/images/preview_images/preview_1.PNG)
 
 ![](https://github.com/theiszm/MagisAir/blob/main/MagisAir/static/images/preview_images/preview_3.PNG)
 
 ![](https://github.com/theiszm/MagisAir/blob/main/MagisAir/static/images/preview_images/preview_5.PNG)
+
+![](https://github.com/theiszm/MagisAir/blob/main/MagisAir/static/images/preview_images/preview_7.PNG)
