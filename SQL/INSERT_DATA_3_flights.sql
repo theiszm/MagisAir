@@ -68,9 +68,8 @@ INSERT INTO Bookings_flight (flight_code, departure, arrival, route_id, base_far
     ('MB 710', '2026-01-05 08:30:00', '2026-01-05 09:45:00', 7, 6200),
     ('MB 711', '2026-01-07 19:00:00', '2026-01-07 20:15:00', 8, 6200);
 
-
--- FEBRUARY 2026
--- Madrid <-> Barcelona
+-- DECEMBER 2026
+-- London <-> Boston
 INSERT INTO Bookings_flight (flight_code, departure, arrival, route_id, base_fare) VALUES
-    ('MB 720', '2026-02-03 09:00:00', '2026-02-03 10:15:00', 7, 6300),
-    ('MB 732', '2026-02-21 20:00:00', '2026-02-21 21:15:00', 8, 6500);
+    ('LB 800', '2026-12-10 08:30:00', '2026-12-10 12:00:00', 3, 28000),
+    ('LB 900', '2026-12-10 16:00:00', '2026-12-10 04:30:00', 4, 29000);
