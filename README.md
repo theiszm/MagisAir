@@ -17,6 +17,6 @@ python manage.py load_all_sql
 
 ![](https://github.com/theiszm/MagisAir/blob/main/MagisAir/static/images/preview_images/preview_5.PNG)
 
-## Admin panel / 
+## Admin panel / Sales reports
 
 ![](https://github.com/theiszm/MagisAir/blob/main/MagisAir/static/images/preview_images/preview_7.PNG)
